@@ -4,6 +4,8 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![CustomTkinter](https://img.shields.io/badge/GUI-CustomTkinter-orange.svg)](https://github.com/TomSchimansky/CustomTkinter)
 
+<img src="https://pc-chem-basics.blog.jp/VeloFetch_en.png" width="600px"> 
+
 **VeloFetch** is a sleek, modern, and high-speed GUI client for `yt-dlp`.  
 Built with Python and CustomTkinter, it provides a simple interface for high-quality video and audio fetching without the need for command-line complexity.
 
