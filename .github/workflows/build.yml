@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-          cache: 'pip' # ここはGitHub標準の設定なのでOKです
+          cache: 'pip'
 
       - name: Install dependencies
         run: |
@@ -28,14 +28,14 @@ jobs:
         with:
           nuitka-version: main
           script-name: VeloFetch.py
+          # --- 重複を避けるための修正点 ---
           mode: app
-          standalone: true
           macos-create-app-bundle: true
           disable-console: true
+          # standalone: true は削除（mode: app に含まれるため）
+          # ------------------------------
           enable-plugins: tk-inter
-          # macOS用のライブラリパス
           include-data-dir: ${{ env.pythonLocation }}/lib/python3.12/site-packages/customtkinter=customtkinter
-          # --- cache: true を削除しました ---
 
       - name: Upload macOS App
         uses: actions/upload-artifact@v4
