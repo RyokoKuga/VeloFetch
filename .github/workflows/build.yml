@@ -15,7 +15,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12' # 3.12を指定
+          python-version: '3.12'
           cache: 'pip'
 
       - name: Install dependencies
@@ -29,12 +29,12 @@ jobs:
         with:
           nuitka-version: main
           script-name: VeloFetch.py
+          # --- 修正ポイント：重複を避けるため mode のみに絞る ---
           mode: onefile
-          standalone: true
           windows-disable-console: true
           enable-plugins: tk-inter
-          # Python 3.12のパス構造に対応
           include-data-dir: ${{ env.pythonLocation }}/Lib/site-packages/customtkinter=customtkinter
+          # ----------------------------------------------
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
