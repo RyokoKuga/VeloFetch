@@ -1,0 +1,42 @@
+name: Build VeloFetch EXE
+
+on:
+  push:
+    branches: [ "main" ] # mainブランチにpushした時に実行
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install nuitka zstandard
+
+      - name: Build EXE with Nuitka
+        uses: Nuitka/Nuitka-Action@main
+        with:
+          nuitka-version: main
+          script-name: VeloFetch.py
+          onefile: true
+          standalone: true
+          # GUIアプリとしてビルド（黒い画面を出さない）
+          disable-console: true
+          # tkinter/customtkinterを動かすためのプラグイン
+          enable-plugins: tk-inter
+          # customtkinterのテーマファイルを同梱
+          include-data-dir: ${{ env.pythonLocation }}/Lib/site-packages/customtkinter=customtkinter
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: VeloFetch-Windows-EXE
+          path: build/*.exe
