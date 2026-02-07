@@ -2,7 +2,8 @@ name: Build VeloFetch EXE
 
 on:
   push:
-    branches: [ "main" ] # mainブランチにpushした時に実行
+    branches: [ "main" ]
+  workflow_dispatch: 
 
 jobs:
   build:
@@ -14,11 +15,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.12' # 3.12を指定
+          cache: 'pip'
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip
+          pip install customtkinter Pillow
           pip install nuitka zstandard
 
       - name: Build EXE with Nuitka
@@ -26,13 +29,11 @@ jobs:
         with:
           nuitka-version: main
           script-name: VeloFetch.py
-          onefile: true
+          mode: onefile
           standalone: true
-          # GUIアプリとしてビルド（黒い画面を出さない）
-          disable-console: true
-          # tkinter/customtkinterを動かすためのプラグイン
+          windows-disable-console: true
           enable-plugins: tk-inter
-          # customtkinterのテーマファイルを同梱
+          # Python 3.12のパス構造に対応
           include-data-dir: ${{ env.pythonLocation }}/Lib/site-packages/customtkinter=customtkinter
 
       - name: Upload Artifact
