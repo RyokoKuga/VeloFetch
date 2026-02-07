@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-macos:
-    runs-on: macos-15-intel # Intel版でビルド（Rosetta対応）
+    runs-on: macos-15-intel
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-          cache: 'pip'
+          cache: 'pip' # ここはGitHub標準の設定なのでOKです
 
       - name: Install dependencies
         run: |
@@ -35,7 +35,7 @@ jobs:
           enable-plugins: tk-inter
           # macOS用のライブラリパス
           include-data-dir: ${{ env.pythonLocation }}/lib/python3.12/site-packages/customtkinter=customtkinter
-          cache: true 
+          # --- cache: true を削除しました ---
 
       - name: Upload macOS App
         uses: actions/upload-artifact@v4
