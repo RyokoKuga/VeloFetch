@@ -28,12 +28,11 @@ jobs:
         with:
           nuitka-version: main
           script-name: VeloFetch.py
-          # --- 重複を避けるための修正点 ---
+          # --- 徹底的に重複を排除 ---
           mode: app
-          macos-create-app-bundle: true
           disable-console: true
-          # standalone: true は削除（mode: app に含まれるため）
-          # ------------------------------
+          # standalone と macos-create-app-bundle は mode: app が自動で処理するため削除
+          # -----------------------
           enable-plugins: tk-inter
           include-data-dir: ${{ env.pythonLocation }}/lib/python3.12/site-packages/customtkinter=customtkinter
 
@@ -41,4 +40,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: VeloFetch-macOS
+          # 拡張子が .app のディレクトリをアップロード
           path: build/*.app
