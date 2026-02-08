@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-    - '**.py'   # プログラムを直した時
+      - '**.yml'  # 設定を変えた時のみ実行
   workflow_dispatch: 
 
 jobs:
