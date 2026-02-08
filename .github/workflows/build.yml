@@ -1,15 +1,15 @@
-name: Build VeloFetch macOS Only
+name: Build VeloFetch EXE
 
 on:
   push:
     branches: [ "main" ]
     paths:
-      - '**.yml'  # 設定を変えた時のみ実行
+    - '**.py'   # プログラムを直した時
   workflow_dispatch: 
 
 jobs:
-  build-macos:
-    runs-on: macos-15-intel
+  build:
+    runs-on: windows-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,26 +23,24 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install customtkinter Pillow nuitka zstandard
-
-      - name: Build App
+          pip install customtkinter Pillow
+          pip install nuitka zstandard
+      - name: Build EXE with Nuitka
         uses: Nuitka/Nuitka-Action@main
         with:
           nuitka-version: main
           script-name: VeloFetch.py
-          # --- 徹底的に重複を排除 ---
-          mode: app
-          disable-console: true
-          # standalone と macos-create-app-bundle は mode: app が自動で処理するため削除
-          # -----------------------
+          # --- 修正ポイント：重複を避けるため mode のみに絞る ---
+          mode: onefile
+          windows-disable-console: true
           enable-plugins: tk-inter
-          include-data-dir: ${{ env.pythonLocation }}/lib/python3.12/site-packages/customtkinter=customtkinter
+          include-data-dir: ${{ env.pythonLocation }}/Lib/site-packages/customtkinter=customtkinter
           # --- アイコン設定を追加 ---
-          macos-app-icon: Image/icon.icns
+          windows-icon-from-ico: Image/icon.ico
+          # ----------------------------------------------
 
-      - name: Upload macOS App
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: VeloFetch-macOS
-          # 拡張子が .app のディレクトリをアップロード
-          path: build/*.app
+          name: VeloFetch-Windows-EXE
+          path: build/*.exe
