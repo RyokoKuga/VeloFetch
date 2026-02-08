@@ -23,17 +23,21 @@ Built with Python and CustomTkinter, it provides a simple interface for high-qua
 
 ## Running from Source (Alternative)
 
-If the standalone executable (`.exe` or `.app`) does not launch on your system, you can run **VeloFetch** directly using Python.
+If the standalone executable (`.exe` or `.app`) does not launch on your system, you can run **VeloFetch** directly using Python.  
 
-### 1. Prerequisites
-
-Before running the script, ensure you have the following installed:
-
-* **Python 3.12+**
-
-### 2. Installation
-
-**Install requirements:**  
+1.  **Check your Python version**
+    Make sure you have Python 3.12+ installed:
     ```bash
-    pip install customtkinter
+    python3 --version
+    ```
+
+2.  **Install the required package**
+    Install `customtkinter` via pip:
+    ```bash
+    pip3 install customtkinter
+    ```
+
+3.  **Run the application**
+    ```bash
+    python3 VeloFetch.py
     ```
