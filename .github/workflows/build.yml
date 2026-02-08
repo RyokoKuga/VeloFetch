@@ -3,6 +3,8 @@ name: Build VeloFetch macOS Only
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - '**.yml'  # 設定を変えた時のみ
   workflow_dispatch: 
 
 jobs:
@@ -35,6 +37,8 @@ jobs:
           # -----------------------
           enable-plugins: tk-inter
           include-data-dir: ${{ env.pythonLocation }}/lib/python3.12/site-packages/customtkinter=customtkinter
+          # --- アイコン設定を追加 ---
+          macos-app-icon: Image/icon.icns
 
       - name: Upload macOS App
         uses: actions/upload-artifact@v4
