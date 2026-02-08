@@ -20,3 +20,20 @@ Built with Python and CustomTkinter, it provides a simple interface for high-qua
 - **Advanced Mode:** Supports direct `yt-dlp` arguments for power users.
 - **Configurable:** Easily set your custom paths for `yt-dlp` and `ffmpeg`.
 - **Cross-Platform:** Designed to work on Windows and macOS.
+
+## Running from Source (Alternative)
+
+If the standalone executable (`.exe` or `.app`) does not launch on your system, you can run **VeloFetch** directly using Python.
+
+### 1. Prerequisites
+
+Before running the script, ensure you have the following installed:
+
+* **Python 3.12+**
+
+### 2. Installation
+
+**Install requirements:**  
+    ```bash
+    pip install customtkinter
+    ```
