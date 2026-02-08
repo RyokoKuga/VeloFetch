@@ -9,14 +9,27 @@ import re
 import json
 import shlex
 from tkinter import filedialog
+from pathlib import Path  # 追加
 
 # --- 外観設定 ---
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
 
-CONFIG_FILE = "VeloFetch_config.json"
 APP_NAME = "VeloFetch"
 ACCENT_COLOR = "#007AFF" 
+
+def get_config_path():
+    """OSごとに適切な設定ファイルの保存場所を返す"""
+    if sys.platform == "win32":
+        base_dir = Path(os.getenv('APPDATA', Path.home() / "AppData/Roaming"))
+    elif sys.platform == "darwin":
+        base_dir = Path.home() / "Library" / "Application Support"
+    else:
+        base_dir = Path.home() / ".config"
+    
+    config_dir = base_dir / APP_NAME
+    config_dir.mkdir(parents=True, exist_ok=True)
+    return config_dir / "VeloFetch_config.json"
 
 class VeloFetchApp(ctk.CTk):
     def __init__(self):
@@ -32,6 +45,9 @@ class VeloFetchApp(ctk.CTk):
         self.process = None
         self.is_windows = (sys.platform == "win32")
         self.audio_only_var = ctk.BooleanVar(value=False)
+        
+        # 設定のパスを決定
+        self.config_path = get_config_path()
         
         # 設定のロード
         self.load_config()
@@ -172,10 +188,12 @@ class VeloFetchApp(ctk.CTk):
 
     def load_config(self):
         config = {}
-        if os.path.exists(CONFIG_FILE):
+        if self.config_path.exists():
             try:
-                with open(CONFIG_FILE, "r") as f: config = json.load(f)
-            except: pass
+                with open(self.config_path, "r", encoding="utf-8") as f: 
+                    config = json.load(f)
+            except: 
+                pass
         self.save_path = config.get("save_path", "")
         self.custom_ytdlp = config.get("custom_ytdlp", "")
         self.custom_ffmpeg = config.get("custom_ffmpeg", "")
@@ -185,7 +203,8 @@ class VeloFetchApp(ctk.CTk):
 
     def save_config_to_file(self):
         config = {"save_path": self.save_path, "custom_ytdlp": self.custom_ytdlp, "custom_ffmpeg": self.custom_ffmpeg}
-        with open(CONFIG_FILE, "w") as f: json.dump(config, f, indent=4)
+        with open(self.config_path, "w", encoding="utf-8") as f: 
+            json.dump(config, f, indent=4)
 
     def show_ctk_message(self, title, message):
         msg_window = ctk.CTkToplevel(self)
